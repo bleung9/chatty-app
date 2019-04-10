@@ -16,27 +16,23 @@ class App extends Component {
   }
 
   submitMessage(message) {
-    let new_obj = {username: this.state.currentUser.name, content: message};
+    // console.log("HAS THIS SHIT CHANGED?", this.state.currentUser.name);
+    let new_obj = {type: "postMessage", username: this.state.currentUser.name, content: message};
+    // console.log("outgoing message from client type: ", new_obj.type);
     this.socket.send(JSON.stringify(new_obj));
   }
 
-  submitNewUser(user) {
-    this.setState({currentUser: {name: user}});
+  submitNewUser(user, callback) {
+    let new_user_update = {"type": "postNotification", "content": `${this.state.currentUser.name} has changed their name to ${user}.`};
+    // console.log("outgoing new user notification from client type: ", new_user_update.type);
+    // console.log("outgoing new user notification from new user: ", user);
+    this.setState({currentUser: {name: user}}, callback);
+    // console.log("why didn't this change?!?!!!!!", this.state.currentUser.name);
+    this.socket.send(JSON.stringify(new_user_update));
   }
 
   componentDidMount() {
     console.log("componentDidMount <App />");
-
-    // setTimeout(() => {
-    //   console.log("Simulating incoming message");
-    //   // Add a new message to the list of messages in the data store
-    //   const newMessage = {id: 3, username: "Ash", content: "PIKACHU! I FOUND YOU <3!!!!!"};
-    //   const messages = this.state.messages.concat(newMessage)
-    //   // Update the state of the app component.
-    //   // Calling setState will trigger a call to render() in App and all child components.
-    //   this.setState({messages: messages})
-    // }, 3000);
-
 
     // This event listener is fired when the socket is opened (i.e. connected)
     this.socket.onopen = () => {
@@ -46,16 +42,30 @@ class App extends Component {
     // This event listener is fired whenever the socket receives a message from the server
     // The parameter e is a MessageEvent which contains the message from the server along with some metadata.
     this.socket.onmessage = event => {
-      // the actual message from the server is contained in the `data` key
+      // the actual message from the server is contained in the `data` key of event object
+      
       let incoming = JSON.parse(event.data);
+      console.log("incoming thing has ID of:", incoming.id);
+      switch(incoming.type) {
+        case "incomingMessage":
+          // handle incoming message
+          console.log("received incoming message from server of type:", incoming.type);
+          break;
+        case "incomingNotification":
+          // handle incoming notification
+          console.log("received incoming notification from server of type:", incoming.type);
+          break;
+        default:
+          // show an error in the console if the message type is unknown
+          throw new Error("Unknown event type " + data.type);
+      };
       this.setState({messages: [...this.state.messages, incoming]});
-    };
 
     // This event listener is fired when the socket is closed (either by us or the server)
     this.onclose = () => {
       console.log('Client disconnected');
     };
-
+  }
 }
 
   render() {
@@ -63,8 +73,8 @@ class App extends Component {
       <div>
         <MessageList messages={this.state.messages}/>
         <Chatbar currentUser={this.state.currentUser.name} submitMessage={this.submitMessage} submitNewUser={this.submitNewUser}/>
-      </div>
-    );
+      </div>);
   }
 }
+
 export default App;
