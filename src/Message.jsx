@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
 
 function Message(props) {
+  let user_style = {
+    color: props.message.color
+  }
   if (props.message.type === "incomingMessage") {
     return (<li className="message">
-              <span className="message-username">{props.message.username}</span>
+              <span className="message-username" style={user_style}>{props.message.username} </span>
               <span className="message-content">{props.message.content}</span>
             </li>);
   } else {

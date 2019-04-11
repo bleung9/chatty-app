@@ -8,7 +8,7 @@ class App extends Component {
     this.state = {
       currentUser: {name: "Pikachu"},
       messages: [],
-      loggedIn: 0
+      usersLoggedIn: 0
     }
     this.submitMessage = this.submitMessage.bind(this);
     this.submitNewUser = this.submitNewUser.bind(this);
@@ -21,7 +21,7 @@ class App extends Component {
   }
 
   submitMessage(message) {
-    let new_obj = {type: "postMessage", username: this.state.currentUser.name, content: message};
+    let new_obj = {type: "postMessage", username: this.state.currentUser.name, content: message, color: this.state.color};
     this.sendToServer(new_obj);
   }
 
@@ -43,9 +43,16 @@ class App extends Component {
     // The parameter e is a MessageEvent which contains the message from the server along with some metadata.
     this.socket.onmessage = event => {
       let incoming = JSON.parse(event.data);
-      if (typeof incoming !== "object") {
-        let num_of_users = Number(event.data);
-        this.setState({loggedIn: num_of_users});
+      console.log(incoming);
+      console.log(Object.keys(incoming));
+      if (Object.keys(incoming).includes("loggedIn")) {
+        this.setState({usersLoggedIn: incoming.loggedIn});
+        if (!this.state.color) {
+          this.setState({color: incoming.color});
+        }
+      } else if (typeof incoming !== "object") {
+          let num_of_users = Number(event.data);
+          this.setState({usersLoggedIn: num_of_users});
       } else {
         // the actual message from the server is contained in the `data` key of event object
         switch(incoming.type) {
@@ -61,7 +68,7 @@ class App extends Component {
             // show an error in the console if the message type is unknown
             throw new Error("Unknown event type " + data.type);
         };
-        this.setState({messages: [...this.state.messages, incoming]});
+        this.setState({messages: [incoming, ...this.state.messages]});
       }
 
     // This event listener is fired when the socket is closed (either by us or the server)
@@ -76,7 +83,7 @@ class App extends Component {
       <div>
         <nav className="navbar">
           <a href="/" className="navbar-brand">Pika-chat</a>
-          <span className="num-logged-in">{this.state.loggedIn} Pikachu online</span>
+          <span className="num-logged-in">{this.state.usersLoggedIn} Pikachu online</span>
         </nav>
         <MessageList messages={this.state.messages}/>
         <Chatbar currentUser={this.state.currentUser.name} submitMessage={this.submitMessage} submitNewUser={this.submitNewUser}/>
