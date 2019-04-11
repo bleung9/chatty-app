@@ -15,7 +15,7 @@ class Chatbar extends Component {
   }
 
   userSubmit(event) {
-    if (event.charCode === 13 && event.target.value !== "") {
+    if (event.charCode === 13 && event.target.value !== "" && this.props.currentUser !== this.state.user) {
       let new_user = event.target.value;
       this.props.submitNewUser(new_user);
     }

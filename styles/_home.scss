@@ -7,7 +7,7 @@ body {
 }
 
 .chatbar {
-  background: tomato;
+  background: yellow;
   border-top: 1px solid black;
   bottom: 0;
   display: flex;
@@ -72,7 +72,7 @@ body {
 }
 
 .navbar {
-  background: tomato;
+  background: yellow;
   border-bottom: 1px solid black;
   height: 60px;
   left: 0;
@@ -92,4 +92,10 @@ body {
   line-height: 60px;
   padding: 0 10px;
   text-decoration: none;
+}
+
+.num-logged-in {
+  float: right;
+  margin-top: 20px;
+  font-size: 20px;
 }
