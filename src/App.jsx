@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import Message from './Message.jsx';
 import Chatbar from './ChatBar.jsx';
 import MessageList from './MessageList.jsx';
 
@@ -13,18 +12,23 @@ class App extends Component {
     }
     this.submitMessage = this.submitMessage.bind(this);
     this.submitNewUser = this.submitNewUser.bind(this);
+    this.sendToServer = this.sendToServer.bind(this);
     this.socket = new WebSocket('ws://localhost:3001');
+  }
+
+  sendToServer(obj) {
+    this.socket.send(JSON.stringify(obj));
   }
 
   submitMessage(message) {
     let new_obj = {type: "postMessage", username: this.state.currentUser.name, content: message};
-    this.socket.send(JSON.stringify(new_obj));
+    this.sendToServer(new_obj);
   }
 
   submitNewUser(user, callback) {
     let new_user_update = {"type": "postNotification", "content": `${this.state.currentUser.name} has changed their name to ${user}.`};
     this.setState({currentUser: {name: user}}, callback);
-    this.socket.send(JSON.stringify(new_user_update));
+    this.sendToServer(new_user_update);
   }
 
   componentDidMount() {
@@ -38,12 +42,12 @@ class App extends Component {
     // This event listener is fired whenever the socket receives a message from the server
     // The parameter e is a MessageEvent which contains the message from the server along with some metadata.
     this.socket.onmessage = event => {
-      if (typeof event.data === "string") {
+      let incoming = JSON.parse(event.data);
+      if (typeof incoming !== "object") {
         let num_of_users = Number(event.data);
         this.setState({loggedIn: num_of_users});
       } else {
         // the actual message from the server is contained in the `data` key of event object
-        let incoming = JSON.parse(event.data);
         switch(incoming.type) {
           case "incomingMessage":
             // handle incoming message
@@ -71,7 +75,7 @@ class App extends Component {
     return (
       <div>
         <nav className="navbar">
-          <a href="/" className="navbar-brand">Chatty</a>
+          <a href="/" className="navbar-brand">Pika-chat</a>
           <span className="num-logged-in">{this.state.loggedIn} Pikachu online</span>
         </nav>
         <MessageList messages={this.state.messages}/>
