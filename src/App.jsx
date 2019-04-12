@@ -21,7 +21,6 @@ class App extends Component {
   }
 
   submitMessage(message) {
-    debugger;
     let new_obj = {type: "postMessage", username: this.state.currentUser.name, content: message, color: this.state.color};
     this.sendToServer(new_obj);
   }
