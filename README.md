@@ -28,8 +28,7 @@ This project uses port 3000 (<http://localhost:3000/>) in your browser.
 
 ## Final Product
 
-!["Screenshot of Pika-chat home page.  Conversation with three separate open clients (browser tabs)"](https://i.imgur.com/KYvkr3Q.png)
-!["Screenshot of Tweeter home page, composed tweet box hidden"](https://i.imgur.com/tZ0Cj7n.png)
+!["Screenshot of Pika-chat home page.  Conversation with three separate open clients (browser tabs)"](https://i.imgur.com/LRCv6Lf.jpg)
 
 ## Getting Started
 
