@@ -11,10 +11,12 @@ class Chatbar extends Component {
   }
 
   userChange(event) {
+    //part of a React controlled component to allow displayed user to update based on input
     this.setState({user: event.target.value});
   }
 
   userSubmit(event) {
+    //submit a new username to server
     if (event.charCode === 13 && event.target.value !== "" && this.props.currentUser !== this.state.user) {
       let new_user = event.target.value;
       this.props.submitNewUser(new_user);
@@ -23,6 +25,10 @@ class Chatbar extends Component {
 
   submitChange(event) {
     //13 is Enter key
+    //when user submits a message, call submitMessage in App.jsx
+    //if someone changes the username and submits a message and then hits enter,
+    //this code can handle that too; it'll create a notification for the username change first,
+    //then show the new message
     if (event.charCode === 13 && event.target.value !== "") {
       let new_message = event.target.value;
       event.target.value = "";

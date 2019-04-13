@@ -26,8 +26,7 @@ class MessageList extends Component {
       //   new_str = temp.substring(0, idx[i]) + img_url + temp.substring(idx[i] + url_to_replace[i].length, idx[i + 1]) + new_str.substring(idx[i + 1]);
 
       let new_str = message.content.replace(regex, "<img src='$1' style=\"max-width: 150px\" style=\"max-height: 200px\" />");
-      new_str !== "" && cur_idx === 0 ? message.content = new_str : message.content = temp;
-
+      !temp.includes("<img src=") ? message.content = new_str : message.content = temp; 
       return (<Message message={message} key={message.id}/>);
     });
 

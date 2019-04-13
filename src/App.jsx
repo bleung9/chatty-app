@@ -16,15 +16,18 @@ class App extends Component {
     this.socket = new WebSocket('ws://localhost:3001');
   }
 
+  //send a message object to the server
   sendToServer(obj) {
     this.socket.send(JSON.stringify(obj));
   }
 
+  //assemble a message object, call sendtoServer to send message to server
   submitMessage(message) {
     let new_obj = {type: "postMessage", username: this.state.currentUser.name, content: message, color: this.state.color};
     this.sendToServer(new_obj);
   }
 
+  //update state to reflect a username change
   submitNewUser(user, callback) {
     let new_user_update = {"type": "postNotification", "content": `${this.state.currentUser.name} has changed their name to ${user}.`};
     this.setState({currentUser: {name: user}}, callback);
@@ -40,34 +43,21 @@ class App extends Component {
     };
 
     // This event listener is fired whenever the socket receives a message from the server
-    // The parameter e is a MessageEvent which contains the message from the server along with some metadata.
     this.socket.onmessage = event => {
       let incoming = JSON.parse(event.data);
-      console.log(incoming);
-      console.log(Object.keys(incoming));
+      
       if (Object.keys(incoming).includes("loggedIn")) {
+        //if someone just opened a new client in the browser, set the state to the random color that was assigned by the server.  if someone closed the client, they won't be assigned a color b/c the server won't send a color to the client to be updated
         this.setState({usersLoggedIn: incoming.loggedIn});
         if (!this.state.color) {
           this.setState({color: incoming.color});
         }
       } else if (typeof incoming !== "object") {
+        //if someone closes the client, only a number is sent back by the server, so just update the usersLoggedIn to the number of users sent back by the server
           let num_of_users = Number(event.data);
           this.setState({usersLoggedIn: num_of_users});
       } else {
-        // the actual message from the server is contained in the `data` key of event object
-        switch(incoming.type) {
-          case "incomingMessage":
-            // handle incoming message
-            console.log("received incoming message from server of type:", incoming.type);
-            break;
-          case "incomingNotification":
-            // handle incoming notification
-            console.log("received incoming notification from server of type:", incoming.type);
-            break;
-          default:
-            // show an error in the console if the message type is unknown
-            throw new Error("Unknown event type " + data.type);
-        };
+        //final condition is if the incoming message from server is someone typing in a message and submitting it, so just send that
         this.setState({messages: [incoming, ...this.state.messages]});
       }
 
@@ -90,7 +80,5 @@ class App extends Component {
       </div>);
   }
 }
-
-//(http)?s?:?(\/\/[^"']*\.(?:png|jpg|jpeg|gif|png|svg))
 
 export default App;
