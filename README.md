@@ -21,10 +21,10 @@ This project uses port 3000 (<http://localhost:3000/>) in your browser.
 - sockjs-client version ^1.1.2 or above
 - style-loader version 0.13.1 or above
 - webpack version 2.2.1 or above
-- webpack-dev-server version 2.3.0"
+- webpack-dev-server version 2.3.0
 - react version 15.4.2 or above
 - react-dom version 15.4.2 or above
-- uuid version ^3.3.2"
+- uuid version 3.3.2 or above
 
 ## Final Product
 
