@@ -1,45 +1,37 @@
-React Boilerplate
-=====================
+# ChattyApp Project
 
-A minimal and light dev environment for ReactJS.
+ChattyApp is a simple in-browser chat client with basic functionality.  URL's linking to images (png, jpg, jpeg, gif, png, svg) will render the image instead.  
 
-### Usage
+The base React code was provided by LHL (<https://github.com/lighthouse-labs/react-simple-boilerplate/>).
 
-Clone the boilerplate and create your own git repo.
+This project uses port 3000 (<http://localhost:3000/>) in your browser.
 
-```
-git clone git@github.com:lighthouse-labs/react-simple-boilerplate.git
-cd react-simple-boilerplate
-git remote rm origin
-git remote add origin [YOUR NEW REPOSITORY]
-# Manually update your package.json file
-```
+## Dependencies
 
-Install the dependencies and start the server.
+- babel-core version 6.23.1 or above
+- babel-loader version 6.3.1 or above
+- babel-preset-es2015 version 6.22.0 or above
+- babel-preset-react version 6.23.0 or above
+- babel-preset-stage-0 version 6.22.0 or above
+- css-loader version 0.26.1 or above
+- eslint version 3.15.0 or above
+- eslint-plugin-react version 6.9.0 or above
+- node-sass version 4.5.0 or above
+- sass-loader version 6.0.0 or above
+- sockjs-client version ^1.1.2 or above
+- style-loader version 0.13.1 or above
+- webpack version 2.2.1 or above
+- webpack-dev-server version 2.3.0"
+- react version 15.4.2 or above
+- react-dom version 15.4.2 or above
+- uuid version ^3.3.2"
 
-```
-npm install
-npm start
-open http://localhost:3000
-```
+## Final Product
 
-### Static Files
+!["Screenshot of Pika-chat home page.  Conversation with three separate open clients (browser tabs)"](https://i.imgur.com/KYvkr3Q.png)
+!["Screenshot of Tweeter home page, composed tweet box hidden"](https://i.imgur.com/tZ0Cj7n.png)
 
-You can store static files like images, fonts, etc in the `build` folder.
+## Getting Started
 
-For example, if you copy a file called my_image.png into the build folder you can access it using `http://localhost:3000/build/my_image.png`.
-
-### Linting
-
-This boilerplate project includes React ESLint configuration.
-
-```
-npm run lint
-```
-
-### Dependencies
-
-* React
-* Webpack
-* [babel-loader](https://github.com/babel/babel-loader)
-* [webpack-dev-server](https://github.com/webpack/webpack-dev-server)
+- Install all dependencies (using the `npm install` command).
+- Run the browser client using the `npm start` command.
