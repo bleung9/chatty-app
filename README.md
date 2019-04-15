@@ -4,6 +4,8 @@ ChattyApp is a simple in-browser chat client with basic functionality.  URL's li
 
 The base React code was provided by LHL (<https://github.com/lighthouse-labs/react-simple-boilerplate/>).
 
+Code for the Websockets server is found here: (<https://github.com/bleung9/chatty-sockets>)
+
 This project uses port 3000 (<http://localhost:3000/>) in your browser.
 
 ## Dependencies
